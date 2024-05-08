@@ -82,7 +82,7 @@ export default function Home() {
               <Command>
                 <CommandInput
                   value={input}
-                  onValueChange={setInput}
+                  onValueChange={(e) => setInput(e)}
                   onSubmit
                   placeholder="Search..."
                   className="placeholder:text-zinc-500"
