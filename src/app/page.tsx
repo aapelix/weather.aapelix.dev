@@ -75,10 +75,10 @@ export default function Home() {
         <ModeToggle />
         {!searched ? (
           <div className="flex justify-center flex-col h-screen items-center">
-            <h1 className="text-5xl font-bold tracking-tight">
+            <h1 className="text-5xl font-bold tracking-tight text-center">
               Weather Search ⛅
             </h1>
-            <div className="h-min w-96 mt-4">
+            <div className="h-min md:w-54 lg:w-96 mt-4">
               <Command>
                 <CommandInput
                   value={input}
@@ -118,12 +118,11 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <div className="h-min w-96 mt-4">
+            <div className="h-min md:w-54 lg:w-96 mt-4">
               <Command>
                 <CommandInput
                   value={input}
                   onValueChange={setInput}
-                  onSubmit
                   placeholder="Search..."
                   className="placeholder:text-zinc-500"
                 />
