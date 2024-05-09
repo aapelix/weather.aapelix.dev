@@ -27,6 +27,8 @@ import {
   CloudFog,
   CalendarIcon,
   Sunrise,
+  Sunset,
+  Search,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -165,16 +167,17 @@ export default function Home() {
         <ModeToggle />
         {!searched ? (
           <div className="flex justify-center flex-col h-screen items-center">
-            <h1 className="text-5xl font-bold tracking-tight">
+            <h1 className="text-5xl font-bold tracking-tight text-center">
               Weather Search ⛅
             </h1>
 
             <div className="flex flex-row">
               <Button
-                className="translate-y-4 rounded-full w-12 h-12 absolute -translate-x-16"
+                className="md:translate-y-4 translate-y-3 rounded-full w-12 h-12 absolute md:-translate-x-16 md:bg-white bg-transparent translate-x-64"
                 onClick={getLocation}
               >
-                <MapPin />
+                <MapPin className="md:block hidden" />
+                <MapPin color="#ffffff" className="md:hidden block" />
               </Button>
               <div className="h-min w-96 mt-4">
                 <Command>
@@ -219,11 +222,13 @@ export default function Home() {
           <div>
             <div className="flex flex-row left-1/2 absolute -translate-x-1/2">
               <Button
-                className="translate-y-4 rounded-full w-12 h-12 absolute -translate-x-16"
+                className="md:translate-y-4 translate-y-3 rounded-full w-12 h-12 absolute md:-translate-x-16 md:bg-white bg-transparent translate-x-64"
                 onClick={getLocation}
               >
-                <MapPin />
+                <MapPin className="md:block hidden" />
+                <MapPin color="#ffffff" className="md:hidden block" />
               </Button>
+
               <div className="h-min w-96 mt-4">
                 <Command>
                   <CommandInput
@@ -353,9 +358,23 @@ export default function Home() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  <div className="w-44 h-44 rounded-2xl text-center flex justify-center items-center flex-col">
+                  <div className="w-44 h-44 rounded-2xl text-center lg:flex justify-center items-center flex-col sm:hidden hidden">
                     <p>Sunrise {timeConverter(weather.sys.sunrise, true)}</p>
                     <Sunrise className="w-32 h-32" />
+                  </div>
+                  <div className="w-44 h-44 rounded-2xl text-center lg:flex justify-center items-center flex-col sm:hidden hidden">
+                    <p>Sunset {timeConverter(weather.sys.sunrise, true)}</p>
+                    <Sunset className="w-32 h-32" />
+                  </div>
+                </div>
+                <div className="flex items-center flex-wrap">
+                  <div className="w-44 h-44 rounded-2xl text-center sm:flex justify-center items-center flex-col lg:hidden flex">
+                    <p>Sunrise {timeConverter(weather.sys.sunrise, true)}</p>
+                    <Sunrise className="w-32 h-32" />
+                  </div>
+                  <div className="w-44 h-44 rounded-2xl text-center sm:flex justify-center items-center flex-col lg:hidden flex">
+                    <p>Sunset {timeConverter(weather.sys.sunrise, true)}</p>
+                    <Sunset className="w-32 h-32" />
                   </div>
                 </div>
                 <div className="border-2 border-zinc-600 p-3 rounded-2xl mt-4">
