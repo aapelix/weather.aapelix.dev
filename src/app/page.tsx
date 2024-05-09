@@ -165,18 +165,25 @@ export default function Home() {
         <ModeToggle />
         {!searched ? (
           <div className="flex justify-center flex-col h-screen items-center">
-            <h1 className="text-5xl font-bold tracking-tight text-center">
+            <h1 className="text-5xl font-bold tracking-tight">
               Weather Search ⛅
             </h1>
-            <div className="h-min w-96 mt-4">
-              <Command>
-                <CommandInput
-                  value={input}
-                  onValueChange={setInput}
-                  onSubmit
-                  placeholder="Search..."
-                  className="placeholder:text-zinc-500"
-                />
+
+            <div className="flex flex-row">
+              <Button
+                className="translate-y-4 rounded-full w-12 h-12 absolute -translate-x-16"
+                onClick={getLocation}
+              >
+                <MapPin />
+              </Button>
+              <div className="h-min w-96 mt-4">
+                <Command>
+                  <CommandInput
+                    value={input}
+                    onValueChange={setInput}
+                    placeholder="Search..."
+                    className="placeholder:text-zinc-500"
+                  />
 
                   <Button
                     className="absolute translate-x-72 w-20 duration-300 bg-transparent text-zinc-200 hover:text-zinc-800"
@@ -210,15 +217,21 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <div className="h-min w-96 mt-4">
-              <Command>
-                <CommandInput
-                  value={input}
-                  onValueChange={setInput}
-                  onSubmit
-                  placeholder="Search..."
-                  className="placeholder:text-zinc-500"
-                />
+            <div className="flex flex-row left-1/2 absolute -translate-x-1/2">
+              <Button
+                className="translate-y-4 rounded-full w-12 h-12 absolute -translate-x-16"
+                onClick={getLocation}
+              >
+                <MapPin />
+              </Button>
+              <div className="h-min w-96 mt-4">
+                <Command>
+                  <CommandInput
+                    value={input}
+                    onValueChange={setInput}
+                    placeholder="Search..."
+                    className="placeholder:text-zinc-500"
+                  />
 
                   <Button
                     className="absolute translate-x-72 w-20 duration-300 bg-transparent text-zinc-200 hover:text-zinc-800"
