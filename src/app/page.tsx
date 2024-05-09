@@ -125,6 +125,8 @@ export default function Home() {
   }) => {
     console.log(city.name + " " + city.longitude + " " + city.latitude);
 
+    localStorage.setItem("recent1", city.name);
+
     setCityName(city.name);
 
     const data = await fetch(
@@ -162,7 +164,7 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen w-screen dark:bg-[#070707] dark:text-zinc-100 overflow-hidden">
+    <main className="h-screen w-screen dark:bg-[#070707] dark:text-zinc-100 overflow-x-hidden">
       <div className="flex flex-col items-center duration-500 animate-in animate fade-in-5 slide-in-from-bottom-2.5">
         <ModeToggle />
         {!searched ? (
@@ -229,7 +231,7 @@ export default function Home() {
                 <MapPin color="#ffffff" className="md:hidden block" />
               </Button>
 
-              <div className="h-min w-96 mt-4">
+              <div className="h-min w-96 mt-4 -z-50">
                 <Command>
                   <CommandInput
                     value={input}
@@ -249,6 +251,17 @@ export default function Home() {
                     {input !== "" && input !== undefined ? (
                       <>
                         <CommandEmpty>No results found.</CommandEmpty>
+
+                        <CommandGroup heading="Recent">
+                          {localStorage.getItem("recent1") ? (
+                            <CommandItem
+                              value={localStorage.getItem("recent1")!}
+                              onSelect={setInput}
+                            >
+                              {localStorage.getItem("recent1")}
+                            </CommandItem>
+                          ) : null}
+                        </CommandGroup>
 
                         <CommandGroup heading="Results">
                           {filteredCities.map((city) => (
@@ -293,7 +306,7 @@ export default function Home() {
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 z-50" align="start">
                       <Calendar
                         mode="single"
                         selected={date}
@@ -307,7 +320,7 @@ export default function Home() {
                   </Popover>
                 </div>
                 <div className="flex items-center flex-wrap mt-10">
-                  <div className="text-center bg-[#0e0e0e] mr-5 h-44 w-44 flex justify-center items-center rounded-[5rem] flex-col mx-2">
+                  <div className="text-center bg-[#0e0e0e] mr-5 md:h-44 md:w-44 flex justify-center items-center rounded-[5rem] flex-col mx-2">
                     <img
                       src="/arrow2.png"
                       style={{
