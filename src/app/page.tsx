@@ -14,22 +14,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 import cities from "../data.json";
 import { Button } from "@/components/ui/button";
-import {
-  MapPin,
-  Sun,
-  Cloud,
-  CloudSun,
-  Cloudy,
-  CloudRainWind,
-  CloudSunRain,
-  CloudLightning,
-  Snowflake,
-  CloudFog,
-  CalendarIcon,
-  Sunrise,
-  Sunset,
-  Search,
-} from "lucide-react";
+import { MapPin, CalendarIcon, Sunrise, Sunset } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import {
   Popover,
@@ -44,6 +29,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import WeatherIcon from "./components/weatherIcon";
+import ForeCastItem from "./components/foreCastItem";
 
 interface WeatherData {
   name: string;
@@ -67,6 +54,23 @@ interface WeatherData {
     sunset: number;
   };
   // Add other necessary properties
+}
+
+interface ForecastData {
+  list: {
+    dt_txt: string;
+    weather: {
+      description: string;
+      icon: string;
+    }[];
+    main: {
+      temp: number;
+      feels_like: number;
+      humidity: number;
+      temp_max: number;
+      temp_min: number;
+    };
+  }[];
 }
 
 function timeConverter(UNIX_timestamp: number, only_time: boolean) {
@@ -108,6 +112,7 @@ export default function Home() {
   const [searched, setSearched] = useState(false);
   const [input, setInput] = useState("");
   const [weather, setWeather] = useState<WeatherData>();
+  const [forecast, setForecast] = useState<ForecastData>();
   const [cityName, setCityName] = useState("");
 
   const [coords, setCoords] = useState<GeolocationCoordinates>();
@@ -133,11 +138,18 @@ export default function Home() {
       `https://api.openweathermap.org/data/2.5/weather?lat=${city.latitude}&lon=${city.longitude}&appid=${apiKey}&units=metric`
     );
 
+    const data2 = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${city.latitude}&lon=${city.longitude}&appid=${apiKey}&units=metric`
+    );
+
     const res = await data.json();
+    const res2 = await data2.json();
 
     console.log(res);
+    console.log(res2);
 
     setWeather(res);
+    setForecast(res2);
 
     setSearched(true);
     setInput("");
@@ -163,8 +175,18 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (coords) {
+      searchWeather({
+        name: "",
+        longitude: coords?.longitude,
+        latitude: coords.latitude,
+      });
+    }
+  }, [coords]);
+
   return (
-    <main className="h-screen w-screen dark:bg-[#070707] dark:text-zinc-100 overflow-x-hidden">
+    <main className="h-screen w-screen dark:bg-[#070707] dark:text-zinc-100 overflow-x-hidden pb-6">
       <div className="flex flex-col items-center duration-500 animate-in animate fade-in-5 slide-in-from-bottom-2.5">
         <ModeToggle />
         {!searched ? (
@@ -231,7 +253,7 @@ export default function Home() {
                 <MapPin color="#ffffff" className="md:hidden block" />
               </Button>
 
-              <div className="h-min w-96 mt-4 -z-50">
+              <div className="h-min w-96 mt-4 z-50">
                 <Command>
                   <CommandInput
                     value={input}
@@ -320,7 +342,7 @@ export default function Home() {
                   </Popover>
                 </div>
                 <div className="flex items-center flex-wrap mt-10">
-                  <div className="text-center bg-[#0e0e0e] mr-5 md:h-44 md:w-44 flex justify-center items-center rounded-[5rem] flex-col mx-2">
+                  <div className="text-center bg-[#0e0e0e] mr-5 h-44 w-44 flex justify-center items-center rounded-[5rem] flex-col mx-2">
                     <img
                       src="/arrow2.png"
                       style={{
@@ -328,42 +350,12 @@ export default function Home() {
                       }}
                       alt=""
                     />
-                    <p className="absolute -translate-y-[4.5rem] text-sm">N</p>
-                    <p className="absolute translate-x-[4.5rem] text-sm">E</p>
-                    <p className="absolute translate-y-[4.5rem] text-sm">S</p>
-                    <p className="absolute -translate-x-[4.5rem] text-sm">W</p>
                   </div>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
                         <div className="w-44 h-44 border-[1px] border-zinc-700 rounded-xl mr-3 flex justify-center items-center flex-col">
-                          {weather.weather[0].icon == "01d" ? (
-                            <Sun className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "02d" ? (
-                            <CloudSun className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "03d" ? (
-                            <Cloud className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "04d" ? (
-                            <Cloudy className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "09d" ? (
-                            <CloudRainWind className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "10d" ? (
-                            <CloudSunRain className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "11d" ? (
-                            <CloudLightning className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "13d" ? (
-                            <Snowflake className="w-36 h-36" />
-                          ) : null}
-                          {weather.weather[0].icon == "50d" ? (
-                            <CloudFog className="w-36 h-36" />
-                          ) : null}
+                          <WeatherIcon icon={weather.weather[0].icon} />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -391,12 +383,78 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="border-2 border-zinc-600 p-3 rounded-2xl mt-4">
-                  <p>Humidity: {weather.main.humidity}</p>
+                  <p>Humidity: {weather.main.humidity}%</p>
                   <Progress
                     value={weather.main.humidity}
-                    className="w-[45vw]"
+                    className="w-[40vw]"
                   />
                 </div>
+                {forecast !== undefined ? (
+                  <>
+                    <div className="flex flex-row flex-nowrap mt-4">
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm rounded-l-3xl">
+                        <ForeCastItem data={forecast.list[0]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[1]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[2]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm md:rounded-r-sm rounded-r-3xl">
+                        <ForeCastItem data={forecast.list[3]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm md:block hidden">
+                        <ForeCastItem data={forecast.list[4]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm md:block hidden">
+                        <ForeCastItem data={forecast.list[5]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm rounded-r-3xl md:block hidden">
+                        <ForeCastItem data={forecast.list[6]} />
+                      </div>
+                    </div>
+
+                    <div className="md:hidden flex flex-row flex-nowrap mt-4">
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm rounded-l-3xl">
+                        <ForeCastItem data={forecast.list[4]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[5]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[6]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm md:rounded-r-sm rounded-r-3xl">
+                        <ForeCastItem data={forecast.list[7]} />
+                      </div>
+                    </div>
+
+                    <div className="flex-row flex-nowrap mt-4 md:flex hidden">
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm rounded-l-3xl">
+                        <ForeCastItem data={forecast.list[0]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[1]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[2]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[3]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[4]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm">
+                        <ForeCastItem data={forecast.list[5]} />
+                      </div>
+                      <div className="md:w-24 md:h-44 w-20 h-44 bg-[#1b1b1b] m-1 rounded-sm rounded-r-3xl">
+                        <ForeCastItem data={forecast.list[6]} />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
               </div>
             ) : (
               <h1>404 | Not found</h1>
