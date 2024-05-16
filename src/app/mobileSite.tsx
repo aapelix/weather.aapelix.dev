@@ -269,7 +269,7 @@ export default function MobileSite() {
             </div>
             <div className="mt-5">
               <h1 className="font-black">Weather now</h1>
-              <div className="grid grid-cols-2 mt-2 gap-y-4 weather-grid">
+              <div className="grid grid-cols-2 mt-2 -translate-x4 gap-y-4 weather-grid">
                 <div className="w-40 h-40 bg-[#0f0f0f] rounded-full flex justify-center items-center">
                   <img
                     src="/arrow2.png"
@@ -315,6 +315,7 @@ export default function MobileSite() {
                 </div>
               </div>
             </div>
+<p>Data from OpenWeatherMap.org</p>
           </div>
         ) : (
           <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-xl">
