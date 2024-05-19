@@ -10,12 +10,22 @@ export default function ForeCastItem(data: any) {
   const forecast = data.data;
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <p className="text-xs">
-        {forecast.dt_txt.slice(8, 10)}.{forecast.dt_txt.slice(5, 7)}
+        {forecast.dt_txt.slice(8, 10) == new Date().getDate() ? (
+          <>today</>
+        ) : null}
+        {forecast.dt_txt.slice(8, 10) == new Date().getDate() + 1 ? (
+          <>tomorrow</>
+        ) : null}
+        {forecast.dt_txt.slice(8, 10) == new Date().getDate() + 2 ? (
+          <>
+            {forecast.dt_txt.slice(8, 10)}.{forecast.dt_txt.slice(5, 7)}
+          </>
+        ) : null}
       </p>
       <h1 className="font-black">{forecast.dt_txt.slice(11, 16)}</h1>
-      <div className="flex items-center justify-center md:translate-x-1 translate-x-[0.3rem] mt-2">
+      <div className="flex items-center justify-center md:translate-x-1 translate-x-[0.3rem] mt-2 overflow-hidden">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
@@ -30,7 +40,7 @@ export default function ForeCastItem(data: any) {
         </TooltipProvider>
       </div>
       <p className="mt-2">{Math.floor(forecast.main.temp)}°C</p>
-      <div className="md:translate-x-[1.30rem] translate-x-4">
+      <div className="translate-x-1">
         <img
           src="/arrow2.png"
           className="w-12 h-12"

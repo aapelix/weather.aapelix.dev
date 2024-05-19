@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Damion");
 
 :root {
   scroll-behavior: smooth;
@@ -18,6 +19,21 @@
 }
 ::-webkit-scrollbar {
   display: none;
+}
+
+.hand {
+  font-family: "Damion", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer base {
+  @font-face {
+    font-family: "Damion";
+    font-weight: 400;
+    font-style: normal;
+    src: url(/Damion-Regular.ttf);
+  }
 }
 
 @layer base {

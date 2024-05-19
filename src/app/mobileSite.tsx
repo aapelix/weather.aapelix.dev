@@ -170,7 +170,7 @@ export default function MobileSite() {
   return (
     <main className="h-screen w-screen bg-[#0e0e0e] text-zinc-100 pb-6 overflow-x-hidden">
       <div className="flex flex-col items-start ml-5 duration-500 animate-in animate fade-in-5 slide-in-from-bottom-2.5">
-        <div className="flex flex-row flex-nowrap gap-3 mt-3 absolute z-50">
+        <div className="flex flex-row flex-nowrap -translate-x-5 justify-center w-screen gap-3 mt-3 absolute z-50">
           <Button
             className="rounded-full bg-white w-12 h-12"
             onClick={getLocation}
@@ -185,7 +185,7 @@ export default function MobileSite() {
             />
 
             <Button
-              className="absolute bg-transparent translate-y-0.5 right-0 translate-x-3 focus:bg-transparent hover:bg-transparent"
+              className="absolute bg-transparent translate-y-0.5 translate-x-48 focus:bg-transparent hover:bg-transparent"
               onClick={() => searchWeather(filteredCities[0])}
             >
               <Search
@@ -215,7 +215,7 @@ export default function MobileSite() {
           </Command>
         </div>
         {searched && weather && forecast ? (
-          <div className="mt-24">
+          <div className="pt-24 bg-gradient-to-b from-[#1d1d1d] to-[#0f0f0f] -translate-x-5 pl-5">
             <div className="flex flex-row items-center w-screen justify-between">
               <div>
                 {cityName !== "" ? (
@@ -269,8 +269,8 @@ export default function MobileSite() {
             </div>
             <div className="mt-5">
               <h1 className="font-black">Weather now</h1>
-              <div className="grid grid-cols-2 mt-2 gap-y-4 weather-grid">
-                <div className="w-40 h-40 bg-[#0f0f0f] rounded-full flex justify-center items-center">
+              <div className="flex mt-2 gap-4 weather-grid justify-between w-[90vw] flex-wrap">
+                <div className="w-40 h-40 bg-[#0e0e0e] rounded-full flex justify-center items-center">
                   <img
                     src="/arrow2.png"
                     className="w-32 h-32"
@@ -280,27 +280,27 @@ export default function MobileSite() {
                     alt=""
                   />
                 </div>
-                <div className="w-40 h-40 bg-[#0f0f0f] rounded-xl flex justify-center flex-col items-center text-center">
+                <div className="w-40 h-40 bg-[#0e0e0e] rounded-xl flex justify-center flex-col items-center text-center">
                   Pressure: <br />
                   <p className="text-2xl font-bold">
                     {weather.main.pressure}kPa
                   </p>
                 </div>
-                <div className="w-40 h-40 bg-[#0f0f0f] flex justify-center items-center rounded-3xl">
+                <div className="w-40 h-40 bg-[#0e0e0e] flex justify-center items-center rounded-3xl">
                   <CircularProgressBar
                     size={100}
                     strokeWidth={10}
                     percentage={weather.main.humidity}
                   />
                 </div>
-                <div className="w-40 h-40 bg-[#0f0f0f] rounded-xl text-center flex justify-center items-center flex-col">
+                <div className="w-40 h-40 bg-[#0e0e0e] rounded-xl text-center flex justify-center items-center flex-col">
                   <p>Max / Min</p>
                   <p className="font-black text-lg">
                     {Math.floor(weather.main.temp_max)}°C /{" "}
                     {Math.floor(weather.main.temp_min)}°C
                   </p>
                 </div>
-                <div className="w-[23rem] h-40 bg-[#0f0f0f] rounded-xl col-span-2 flex flex-col items-center">
+                <div className="w-full h-40 bg-[#0e0e0e] rounded-xl col-span-2 flex flex-col items-center">
                   <div className="flex justify-between w-[80%] mt-2">
                     <p>Sunrise</p>
                     <p>Sunset</p>
@@ -317,8 +317,8 @@ export default function MobileSite() {
             </div>
           </div>
         ) : (
-          <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-xl">
-            Search something
+          <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-damion text-7xl">
+            aapelix
           </h1>
         )}
       </div>
