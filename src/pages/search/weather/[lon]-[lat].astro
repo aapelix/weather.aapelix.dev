@@ -7,7 +7,7 @@ const { lon, lat } = Astro.params;
 
 const apiKey = import.meta.env.PUBLIC_API_KEY;
 const res = await fetch(
-  "http://api.weatherapi.com/v1/forecast.json?key=" +
+  "https://api.weatherapi.com/v1/forecast.json?key=" +
     apiKey +
     "&q=" +
     lat +
@@ -108,7 +108,7 @@ console.log(data);
             {data.current.wind_kph}km/h
           </p>
           <img
-            src="/public/arrow2.png"
+            src="/arrow2.png"
             style={{ rotate: data.current.wind_degree + "deg" }}
             alt=""
           />
