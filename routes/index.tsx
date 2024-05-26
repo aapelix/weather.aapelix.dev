@@ -37,7 +37,7 @@ export const handler: Handlers<Data> = {
     const url = new URL(req.url);
     const query = url.searchParams.get("q") || "Helsinki";
     const resp = await fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${apikey}&q=${query}`
+      `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${query}`,
     );
 
     if (resp.status == 200) {
