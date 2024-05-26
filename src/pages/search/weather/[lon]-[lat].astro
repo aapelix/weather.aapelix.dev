@@ -7,7 +7,7 @@ const { lon, lat } = Astro.params;
 
 const apiKey = import.meta.env.PUBLIC_API_KEY;
 const res = await fetch(
-  "//api.weatherapi.com/v1/forecast.json?key=" +
+  "http://api.weatherapi.com/v1/forecast.json?key=" +
     apiKey +
     "&q=" +
     lat +
