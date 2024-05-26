@@ -46,10 +46,7 @@ import { Search } from "lucide-astro";
 
     if (query.length > 2) {
       const response = await fetch(
-        `https://api.weatherapi.com/v1/search.json?key=` +
-          apiKey +
-          "&q=" +
-          query
+        `http://api.weatherapi.com/v1/search.json?key=` + apiKey + "&q=" + query
       );
 
       const data = await response.json();
@@ -93,7 +90,7 @@ import { Search } from "lucide-astro";
   searchBtn?.addEventListener("click", async () => {
     if (q.length >= 2) {
       const response = await fetch(
-        `https://api.weatherapi.com/v1/search.json?key=` + apiKey + "&q=" + q
+        `http://api.weatherapi.com/v1/search.json?key=` + apiKey + "&q=" + q
       );
 
       const data = await response.json();
