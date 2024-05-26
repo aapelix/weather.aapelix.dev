@@ -1,0 +1,16 @@
+---
+const { text } = Astro.props;
+---
+
+<button
+  class="p-3 px-7 bg-black rounded-full text-white transition-width"
+  style="width: 15rem;"
+  onmouseover="this.style.width='20rem'"
+  onmouseout="this.style.width='15rem'">{text}</button
+>
+
+<style>
+  .transition-width {
+    transition: width 0.3s ease;
+  }
+</style>

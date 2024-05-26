@@ -1,0 +1,22 @@
+---
+import Button from "../components/Button.astro";
+import Nav from "../components/Nav.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="weather.aapelix.dev">
+  <Nav tab="home" />
+  <main class="w-screen flex justify-center">
+    <div class="max-w-2/3">
+      <h1 class="text-center text-5xl mt-44 font-bold text-wrap">
+        weather.aapelix.dev
+      </h1>
+      <p class="text-center text-xl mt-2">Weather app made by aapelix</p>
+      <div class="w-full flex justify-center mt-5">
+        <a href="/search">
+          <Button text="Search weather!" />
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

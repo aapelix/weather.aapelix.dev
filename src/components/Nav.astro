@@ -1,0 +1,59 @@
+---
+import { Home, Info, Search } from "lucide-astro";
+
+const { tab } = Astro.props;
+---
+
+<div class="w-screen h-12 flex justify-center items-center">
+  <nav class="md:w-2/3 w-[95vw] flex justify-between md:text-base text-xl">
+    <h1 class="font-black">weather.aapelix.dev</h1>
+
+    <div class="md:block hidden">
+      <a
+        href="/"
+        class="underline-offset-2"
+        style={{ textDecorationLine: tab == "home" ? "underline" : "none" }}
+        >Home</a
+      >
+      <a
+        href="/about"
+        class="underline-offset-2"
+        style={{ textDecorationLine: tab == "about" ? "underline" : "none" }}
+        >About</a
+      >
+      <a
+        href="/search"
+        class="underline-offset-2"
+        style={{ textDecorationLine: tab == "search" ? "underline" : "none" }}
+        >Search</a
+      >
+    </div>
+
+    <div class="md:hidden flex gap-3">
+      <a
+        href="/"
+        class="p-2 rounded-xl"
+        style={{
+          backgroundColor: tab == "home" ? "black" : "transparent",
+          color: tab == "home" ? "white" : "black",
+        }}><Home /></a
+      >
+      <a
+        href="/about"
+        class="p-2 rounded-xl"
+        style={{
+          backgroundColor: tab == "about" ? "black" : "transparent",
+          color: tab == "about" ? "white" : "black",
+        }}><Info /></a
+      >
+      <a
+        href="/search"
+        class="p-2 rounded-xl"
+        style={{
+          backgroundColor: tab == "search" ? "black" : "transparent",
+          color: tab == "search" ? "white" : "black",
+        }}><Search /></a
+      >
+    </div>
+  </nav>
+</div>
