@@ -108,7 +108,7 @@ function Weather({ result }: Data) {
           <img
             src={result.current.condition.icon}
             alt="Logo"
-            class="mx-auto w-96 h-96"
+            class="mx-auto w-96 h-96 aspect-square"
             style={{ imageRendering: "pixelated" }}
           />
         </div>
