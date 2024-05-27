@@ -115,7 +115,7 @@ function Weather({ result }: Data) {
 
         <div class="flex justify-center gap-6">
           <div class="w-1/2 ml-3 mb-3 rounded-full flex justify-center flex-col items-center h-auto aspect-square bg-red-500">
-            <div class="text-7xl font-black">
+            <div class="md:text-7xl text-5xl font-black">
               {result.current.temp_c}°C
             </div>
             <div>Feels like: {result.current.feelslike_c}</div>
@@ -140,7 +140,9 @@ function Weather({ result }: Data) {
               <h1 class="mr-5 text-xl">{result.current.wind_kph}km/h</h1>
             </div>
             <div class="h-1/4 m-2 w-full rounded-full bg-[#e0e0e0] flex justify-center items-center">
-              <h1>Last updated: {result.current.last_updated}</h1>
+              <h1 class="md:text-base text-sm">
+                Last updated: {result.current.last_updated}
+              </h1>
             </div>
           </div>
         </div>
