@@ -1,4 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { useEffect } from "https://esm.sh/v128/preact@10.19.6/hooks/src/index.js";
+import LocateButton from "../islands/LocateButton.tsx";
 
 interface Data {
   result: WeatherResp | null;
@@ -66,7 +68,7 @@ export const handler: Handlers<Data> = {
     const url = new URL(req.url);
     const query = url.searchParams.get("q") || "Helsinki";
     const resp = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${query}&days=2`,
+      `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${query}&days=7`,
     );
 
     if (resp.status == 200) {
@@ -99,6 +101,7 @@ function Weather({ result }: Data) {
   } else {
     return (
       <div class="text-center">
+        <LocateButton />
         <div class="mx-auto p-5">
           <div class="text-4xl font-black">{result.location.name}</div>
           <div class="text-base">{result.location.country}</div>
@@ -142,15 +145,18 @@ function Weather({ result }: Data) {
           </div>
         </div>
         <div class="w-full flex justify-center">
-          <div class="flex overflow-x-scroll gap-3 md:w-full w-3/4">
+          <div class="flex overflow-x-scroll gap-3 md:w-full w-3/4 bg-[#e0e0e0] rounded-3xl px-2">
             {result.forecast.forecastday.map((day) => (
               <>
                 {day.hour.filter((hour) => {
                   const hourTime = new Date(hour.time.replace(" ", "T"));
                   return hourTime > new Date();
-                }).map((hour) => (
-                  <div class="h-44 text-center flex flex-col justify-center">
-                    <p class="text-xs">{hour.time.slice(-5)}</p>
+                }).slice(0, 30).map((hour) => (
+                  <div class="h-36 text-center flex flex-col justify-center">
+                    <p class="text-xs text-zinc-600">
+                      {hour.time.slice(8, 10)}.{hour.time.slice(5, 7)}
+                    </p>
+                    <p class="text-sm">{hour.time.slice(-5)}</p>
                     <img
                       class="aspect-square"
                       src={hour.condition.icon}
@@ -163,6 +169,36 @@ function Weather({ result }: Data) {
             ))}
           </div>
         </div>
+        <div class="w-full flex justify-center mt-5">
+          <div class="flex flex-col md:w-full w-3/4">
+            {result.forecast.forecastday.map((day, index) => (
+              <div
+                class="flex justify-between items-center h-16 bg-[#e0e0e0] rounded-md mb-1"
+                style={{
+                  borderTopLeftRadius: index == 0 ? "1.5rem" : "0.375rem",
+                  borderTopRightRadius: index == 0 ? "1.5rem" : "0.375rem",
+
+                  borderBottomLeftRadius: index == 2 ? "1.5rem" : "0.375rem",
+                  borderBottomRightRadius: index == 2 ? "1.5rem" : "0.375rem",
+                }}
+              >
+                <div class="flex gap-3 items-center">
+                  <p class="text-xl ml-3 text-zinc-600">
+                    {day.date.slice(8, 10)}.{day.date.slice(5, 7)}
+                  </p>
+                  <img
+                    src={day.day.condition.icon}
+                    alt={day.day.condition.text}
+                  />
+                </div>
+
+                <p class="mr-3 text-xl font-bold">
+                  {day.day.maxtemp_c}°C / {day.day.mintemp_c}°C
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -171,7 +207,7 @@ function Weather({ result }: Data) {
 export default function Home({ data }: PageProps<Data>) {
   return (
     <section>
-      <div class="mx-auto flex max-w-screen-sm flex-col justify-center mt-3">
+      <div class="mx-auto flex max-w-screen-sm flex-col justify-center mt-3 pb-24">
         <h2 class="text-2xl mb-5 mx-3 text-center">
           <form>
             <input
