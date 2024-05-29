@@ -114,40 +114,38 @@ function Weather({ result }: Data) {
             size="22rem"
           />
         </div>
-        <div class="w-full flex justify-center">
-          <div class="md:w-full w-[80vw] flex justify-center gap-6">
-            <div class="w-1/2 ml-3 mb-3 rounded-full flex justify-center text-white flex-col items-center h-auto aspect-square bg-red-500">
-              <div class="md:text-7xl text-5xl font-black">
-                {result.current.temp_c}°C
-              </div>
-              <div>Feels like: {result.current.feelslike_c}</div>
+        <div class="flex justify-center gap-6">
+          <div class="w-1/2 ml-3 mb-3 rounded-full flex justify-center text-white flex-col items-center h-auto aspect-square bg-red-500">
+            <div class="md:text-7xl text-5xl font-black">
+              {result.current.temp_c}°C
             </div>
-            <div class="w-1/2 mr-3 mb-3 h-auto aspect-square flex justify-center flex-col items-center ">
-              <div
-                class={`h-1/4 m-2 w-full rounded-full flex justify-center items-center ${
-                  getUvClass(result.current.uv)
-                }`}
-              >
-                <div class="flex gap-2">
-                  Current UV: <p class="font-bold">{result.current.uv}</p>
-                </div>
+            <div>Feels like: {result.current.feelslike_c}</div>
+          </div>
+          <div class="w-1/2 mr-3 mb-3 h-auto aspect-square flex justify-center flex-col items-center ">
+            <div
+              class={`h-1/4 m-2 w-full rounded-full flex justify-center items-center ${
+                getUvClass(result.current.uv)
+              }`}
+            >
+              <div class="flex gap-2">
+                Current UV: <p class="font-bold">{result.current.uv}</p>
               </div>
-              <div class="h-1/4 m-2 flex items-center justify-center gap-3 w-full rounded-full bg-[#1a1a1a]">
-                <img
-                  class="h-full ml-5"
-                  style={{ rotate: result.current.wind_degree + "deg" }}
-                  src="/arrow2.png"
-                  alt=""
-                />
-                <h1 class="mr-5 text-xl text-white">
-                  {result.current.wind_kph}km/h
-                </h1>
-              </div>
-              <div class="h-1/4 m-2 w-full rounded-full bg-[#1a1a1a] text-white flex justify-center items-center">
-                <h1 class="md:text-base text-xs">
-                  Last updated: {result.current.last_updated}
-                </h1>
-              </div>
+            </div>
+            <div class="h-1/4 m-2 flex items-center justify-center gap-3 w-full rounded-full bg-[#1a1a1a]">
+              <img
+                class="h-full ml-5"
+                style={{ rotate: result.current.wind_degree + "deg" }}
+                src="/arrow2.png"
+                alt=""
+              />
+              <h1 class="mr-5 text-xl text-white">
+                {result.current.wind_kph}km/h
+              </h1>
+            </div>
+            <div class="h-1/4 m-2 w-full rounded-full bg-[#1a1a1a] text-white flex justify-center items-center">
+              <h1 class="md:text-base text-xs">
+                Last updated: {result.current.last_updated}
+              </h1>
             </div>
           </div>
         </div>
