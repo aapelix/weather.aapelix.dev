@@ -12,13 +12,12 @@ export default function LocateButton() {
   }
 
   return (
-    <div class="w-[96.5%] flex justify-center">
+    <div class="w-[96.5%] flex justify-center fixed top-2 left-2">
       <button
-        class="w-1/2 hover:w-2/3 duration-300 rounded-full py-3 translate-x-3 flex items-center justify-center bg-black"
+        class="w-12 hover:scale-105 h-12 fixed top-2 left-2 duration-300 rounded-full py-3 translate-x-3 flex items-center justify-center bg-black"
         onClick={() => getLoc()}
       >
         <img class="invert" src="/map-pin.svg" alt="Locate" />
-        <p class="text-white">Locate</p>
       </button>
     </div>
   );
