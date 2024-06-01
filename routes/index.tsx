@@ -69,8 +69,7 @@ const apikey = "d288ddcbf4164c50b5e94325242605";
 export const handler: Handlers<Data> = {
   async GET(req, ctx) {
     const url = new URL(req.url);
-    const query = url.searchParams.get("q") ||
-      localStorage.getItem("last_search") || "Helsinki";
+    const query = url.searchParams.get("q") || "Helsinki";
     const resp = await fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${query}&days=7&alerts=yes&aqi=yes`,
     );
