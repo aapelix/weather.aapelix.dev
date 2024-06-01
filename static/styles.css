@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 :root {
-  background: #0f0f0f;
+  background-image: url("./image.png");
+  background-size: cover;
+  backdrop-filter: blur(70px);
+  background-repeat: repeat-x;
+  background-color: #0f0f0f;
 }
