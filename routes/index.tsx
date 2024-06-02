@@ -246,7 +246,7 @@ function Weather({ result }: Data) {
           <div class="mx-2 md:w-full w-screen grid md:grid-cols-3 grid-cols-2 bg-[#1a1a1a] rounded-3xl">
             <PressureDisplay pressure={result.current.pressure_mb} />
             <div
-              className={"w-44 h-44 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
+              className={"md:w-44 md:h-44 w-36 h-36 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
                 getAqiClass(
                   airQualityDescriptions["us-epa-index"][
                     result.current.air_quality["us-epa-index"]
@@ -262,7 +262,7 @@ function Weather({ result }: Data) {
                 ]}
               </p>
             </div>
-            <div className="w-44 h-44 bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
+            <div className="md:w-44 md:h-44 w-36 h-36 bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
               <p>Local time:</p>
               <p class="text-2xl font-bold">
                 {result.location.localtime.slice(-5)}
