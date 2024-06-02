@@ -1,6 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { urlToEsbuildResolution } from "jsr:@luca/esbuild-deno-loader@0.10.3";
 import WeatherIcon from "../islands/WeatherIcon.tsx";
+import PressureDisplay from "../islands/PressureDisplay.tsx";
 
 interface Data {
   result: WeatherResp | null;
@@ -14,6 +15,7 @@ interface WeatherResp {
 interface WeatherLocation {
   name: string;
   country: string;
+  localtime: string;
 }
 
 interface Forecast {
@@ -52,11 +54,21 @@ interface WeatherCurrent {
   precip_mm: number;
   wind_kph: number;
   wind_degree: number;
-  pressure: number;
+  pressure_mb: number;
   uv: number;
   gust_kph: number;
   last_updated: string;
   is_day: number;
+  air_quality: {
+    co: number;
+    no2: number;
+    o3: number;
+    so2: number;
+    pm2_5: number;
+    pm10: number;
+    "us-epa-index": number;
+    "gb-defra-index": number;
+  };
 }
 
 interface WeatherCondition {
@@ -94,6 +106,29 @@ function Weather({ result }: Data) {
       return "bg-green-500"; // Low UV index
     }
   }
+
+  const airQualityDescriptions = {
+    "us-epa-index": [
+      "Good",
+      "Moderate",
+      "Unhealthy for Sensitive Groups",
+      "Unhealthy",
+      "Very Unhealthy",
+      "Hazardous",
+    ],
+    "gb-defra-index": ["Low", "Moderate", "High", "Very High"],
+  };
+
+  const getAqiClass = (aqiString: string) => {
+    if (aqiString === "Good") return "bg-green-500";
+    else if (aqiString === "Moderate") return "bg-yellow-500";
+    else if (aqiString === "Unhealthy for Sensitive Groups") {
+      return "bg-orange-500";
+    } else if (aqiString === "Unhealthy") return "bg-red-500";
+    else if (aqiString === "Very Unhealthy") return "bg-purple-500";
+    else if (aqiString === "Hazardous") return "bg-pink-900";
+    else return ""; // default case if none of the levels match
+  };
 
   if (!result) {
     return (
@@ -205,6 +240,35 @@ function Weather({ result }: Data) {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+        <div class="mt-5 flex w-full justify-center">
+          <div class="mx-2 md:w-full w-screen grid md:grid-cols-3 grid-cols-2 bg-[#1a1a1a] rounded-3xl">
+            <PressureDisplay pressure={result.current.pressure_mb} />
+            <div
+              className={"w-44 h-44 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
+                getAqiClass(
+                  airQualityDescriptions["us-epa-index"][
+                    result.current.air_quality["us-epa-index"]
+                  ],
+                )}
+            >
+              <p>
+                AQI:
+              </p>
+              <p class="font-bold">
+                {airQualityDescriptions["us-epa-index"][
+                  result.current.air_quality["us-epa-index"]
+                ]}
+              </p>
+            </div>
+            <div className="w-44 h-44 bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
+              <p>Local time:</p>
+              <p class="text-2xl font-bold">
+                {result.location.localtime.slice(-5)}
+              </p>
+              <p class="text-xs">(may be incorrect)</p>
+            </div>
           </div>
         </div>
       </div>
