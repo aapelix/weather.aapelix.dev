@@ -232,6 +232,8 @@ function Weather({ result }: Data) {
             </div>
             <div
               className={"h-44 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
+            <div
+              className={"md:w-44 md:h-44 w-36 h-36 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
                 getAqiClass(
                   airQualityDescriptions["us-epa-index"][
                     result.current.air_quality["us-epa-index"]
@@ -247,7 +249,7 @@ function Weather({ result }: Data) {
                 ]}
               </p>
             </div>
-            <div className="w-44 h-44 md:hidden bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
+            <div className="md:w-44 md:h-44 w-36 h-36 md:hidden bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
               <p>Humidity</p>
               <p class="text-2xl font-bold">
                 {result.current.humidity}%
