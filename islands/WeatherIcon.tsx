@@ -92,6 +92,7 @@ export default function WeatherIcon(
       class="mx-auto my-3 aspect-square invert brightness-0"
       style={{
         width: size,
+        userSelect: "none",
       }}
     />
   );

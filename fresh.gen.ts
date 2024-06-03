@@ -6,6 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $PressureDisplay from "./islands/PressureDisplay.tsx";
+import * as $Search from "./islands/Search.tsx";
+import * as $WeatherDay from "./islands/WeatherDay.tsx";
 import * as $WeatherIcon from "./islands/WeatherIcon.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -17,6 +19,8 @@ const manifest = {
   },
   islands: {
     "./islands/PressureDisplay.tsx": $PressureDisplay,
+    "./islands/Search.tsx": $Search,
+    "./islands/WeatherDay.tsx": $WeatherDay,
     "./islands/WeatherIcon.tsx": $WeatherIcon,
   },
   baseUrl: import.meta.url,

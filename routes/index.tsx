@@ -2,6 +2,9 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { urlToEsbuildResolution } from "jsr:@luca/esbuild-deno-loader@0.10.3";
 import WeatherIcon from "../islands/WeatherIcon.tsx";
 import PressureDisplay from "../islands/PressureDisplay.tsx";
+import Search from "../islands/Search.tsx";
+import { useState } from "https://esm.sh/v128/preact@10.19.6/hooks/src/index.js";
+import WeatherDay from "../islands/WeatherDay.tsx";
 
 interface Data {
   result: WeatherResp | null;
@@ -213,40 +216,22 @@ function Weather({ result }: Data) {
         <div class="w-full flex justify-center mt-5">
           <div class="flex flex-col md:w-full w-screen mx-2">
             {result.forecast.forecastday.map((day, index) => (
-              <div
-                class="flex justify-between items-center h-16 bg-[#1a1a1a] text-white rounded-md mb-1"
-                style={{
-                  borderTopLeftRadius: index == 0 ? "1.5rem" : "0.375rem",
-                  borderTopRightRadius: index == 0 ? "1.5rem" : "0.375rem",
-
-                  borderBottomLeftRadius: index == 6 ? "1.5rem" : "0.375rem",
-                  borderBottomRightRadius: index == 6 ? "1.5rem" : "0.375rem",
-                }}
-              >
-                <div class="flex gap-3 items-center">
-                  <p class="text-xl font-semibold ml-3 text-zinc-300">
-                    {day.date.slice(8, 10)}.{day.date.slice(5, 7)}
-                  </p>
-                  <WeatherIcon
-                    weatherDescription={day.day.condition.text}
-                    isDay={"day"}
-                    size="45.28px"
-                  />
-                </div>
-
-                <p class="mr-3 text-xl font-light text-center w-max">
-                  {Math.floor(day.day.maxtemp_c)}°C /{" "}
-                  {Math.floor(day.day.mintemp_c)}°C
-                </p>
-              </div>
+              <WeatherDay day={day} index={index} />
             ))}
           </div>
         </div>
-        <div class="mt-5 flex w-full justify-center">
+        <div class="mt-5 flex flex-wrap w-full justify-center">
           <div class="mx-2 md:w-full w-screen grid md:grid-cols-3 grid-cols-2 bg-[#1a1a1a] rounded-3xl">
             <PressureDisplay pressure={result.current.pressure_mb} />
+            <div className="w-44 h-44 bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
+              <p>Local time:</p>
+              <p class="text-2xl font-bold">
+                {result.location.localtime.slice(-5)}
+              </p>
+              <p class="text-xs">(may be incorrect)</p>
+            </div>
             <div
-              className={"w-44 h-44 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
+              className={"h-44 rounded-3xl m-3 text-white flex justify-center items-center text-2xl flex-col " +
                 getAqiClass(
                   airQualityDescriptions["us-epa-index"][
                     result.current.air_quality["us-epa-index"]
@@ -262,12 +247,11 @@ function Weather({ result }: Data) {
                 ]}
               </p>
             </div>
-            <div className="w-44 h-44 bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
-              <p>Local time:</p>
+            <div className="w-44 h-44 md:hidden bg-[#2b2b2b] rounded-3xl m-3 flex flex-col justify-center items-center text-white">
+              <p>Humidity</p>
               <p class="text-2xl font-bold">
-                {result.location.localtime.slice(-5)}
+                {result.current.humidity}%
               </p>
-              <p class="text-xs">(may be incorrect)</p>
             </div>
           </div>
         </div>
@@ -281,18 +265,7 @@ export default function Home({ data }: PageProps<Data>) {
     <>
       <section class="animate-load">
         <div class="mx-auto flex max-w-screen-sm flex-col justify-center mt-3 pb-24">
-          <h2 class="text-xl mb-5 mx-3 text-center">
-            <form>
-              <input
-                name="q"
-                type="text"
-                placeholder="Search..."
-                required
-                autoComplete="off"
-                class="w-1/3 duration-300 focus:w-3/4 py-1 px-3.5 text-white bg-[#1a1a1a] rounded-full placeholder:text-gray-400 "
-              />
-            </form>
-          </h2>
+          <Search />
           <Weather result={data.result} />
         </div>
       </section>
