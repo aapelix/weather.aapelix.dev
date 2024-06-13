@@ -1,13 +1,23 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { urlToEsbuildResolution } from "jsr:@luca/esbuild-deno-loader@0.10.3";
 import WeatherIcon from "../islands/WeatherIcon.tsx";
 import PressureDisplay from "../islands/PressureDisplay.tsx";
 import Search from "../islands/Search.tsx";
-import { useState } from "https://esm.sh/v128/preact@10.19.6/hooks/src/index.js";
 import WeatherDay from "../islands/WeatherDay.tsx";
+import { generateImageUrl } from "../utils/genImgUrl.ts";
 
 interface Data {
   result: WeatherResp | null;
+  result2: SportResp | null;
+}
+
+interface SportResp {
+  football: {
+    stadium: string;
+    country: string;
+    tournament: string;
+    start: string;
+    match: string;
+  }[];
 }
 
 interface WeatherResp {
@@ -89,15 +99,20 @@ export const handler: Handlers<Data> = {
       `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${query}&days=7&alerts=yes&aqi=yes`,
     );
 
-    if (resp.status == 200) {
+    const resp2 = await fetch(
+      `https://api.weatherapi.com/v1/sports.json?key=${apikey}&q=${query}`,
+    );
+
+    if (resp.status == 200 && resp2.status == 200) {
       const result: WeatherResp = await resp.json();
-      return ctx.render({ result });
+      const result2 = await resp2.json();
+      return ctx.render({ result, result2 });
     }
-    return ctx.render({ result: null });
+    return ctx.render({ result: null, result2: null });
   },
 };
 
-function Weather({ result }: Data) {
+function Weather({ result, result2 }: Data) {
   function getUvClass(uvIndex: number) {
     if (uvIndex >= 8) {
       return "bg-red-500"; // Very high to extreme UV index
@@ -133,7 +148,7 @@ function Weather({ result }: Data) {
     else return ""; // default case if none of the levels match
   };
 
-  if (!result) {
+  if (!result || !result2) {
     return (
       <div class="mt-10">
         <h2 class="text-center text-2xl font-bold">404 - Not found</h2>
@@ -255,18 +270,48 @@ function Weather({ result }: Data) {
             </div>
           </div>
         </div>
+        <div class="mt-5 flex flex-wrap w-full justify-center ">
+          <div class="md:w-full w-screen mx-2 bg-[#1a1a1a] rounded-3xl py-2">
+            <h1 class="text-white font-bold">Sport events nearby</h1>
+            <div class="flex justify-center items-center w-full flex-col">
+              {result2.football.map((football) => {
+                return (
+                  <div class="w-[95%] bg-[#2b2b2b] flex justify-between text-left py-1 my-1 rounded-xl text-white">
+                    <div class="ml-2">
+                      <h1 class="font-semibold">{football.match}</h1>
+                      <p>{football.tournament}</p>
+                    </div>
+                    <div class="mr-2">
+                      <p class="text-right">Starting at</p>
+                      <p>
+                        {football.start.slice(8, 10)}.{football.start.slice(
+                          5,
+                          7,
+                        )} {football.start.slice(-5)}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p class="text-xs text-white">(experimental)</p>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 export default function Home({ data }: PageProps<Data>) {
+  const imgUrl = generateImageUrl(data.result);
+
   return (
     <>
       <section class="animate-load">
         <div class="mx-auto flex max-w-screen-sm flex-col justify-center mt-3 pb-24">
+          <meta content={imgUrl} property="og:image" />
           <Search />
-          <Weather result={data.result} />
+          <Weather result={data.result} result2={data.result2} />
         </div>
       </section>
     </>

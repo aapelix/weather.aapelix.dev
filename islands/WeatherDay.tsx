@@ -26,8 +26,8 @@ export default function WeatherDay(props: { day: any; index: number }) {
         borderTopLeftRadius: index == 0 ? "1.5rem" : "0.375rem",
         borderTopRightRadius: index == 0 ? "1.5rem" : "0.375rem",
 
-        borderBottomLeftRadius: index == 6 ? "1.5rem" : "0.375rem",
-        borderBottomRightRadius: index == 6 ? "1.5rem" : "0.375rem",
+        borderBottomLeftRadius: index == 2 ? "1.5rem" : "0.375rem",
+        borderBottomRightRadius: index == 2 ? "1.5rem" : "0.375rem",
       }}
       onClick={() => setOpen(!open)}
       onfocusout={() => setOpen(false)}
